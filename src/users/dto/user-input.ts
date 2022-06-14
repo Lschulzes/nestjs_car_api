@@ -16,12 +16,6 @@ export class CreateUserDTO {
   password: string;
 }
 
-export class FindUserDTO {
-  @IsNumber()
-  @IsNotEmpty()
-  id: number;
-}
-
 export class FindUsersDTO {
   @IsEmail()
   @IsOptional()
