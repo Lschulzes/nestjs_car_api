@@ -1,10 +1,5 @@
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { User } from '../user.entity';
 
 export class CreateUserDTO {
   @IsEmail()
@@ -22,7 +17,7 @@ export class FindUsersDTO {
   email: string;
 }
 
-export class UpdateUserDTO {
+export class UpdateUserDTO implements Partial<User> {
   @IsEmail()
   @IsOptional()
   email: string;

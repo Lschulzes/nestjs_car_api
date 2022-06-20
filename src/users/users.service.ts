@@ -13,8 +13,11 @@ export class UsersService {
     return this.repository.save(user);
   }
 
-  findOne(id: number) {
-    return this.repository.findOne({ where: { id } });
+  async findOne(id: number) {
+    const user = await this.repository.findOne({ where: { id } });
+    if (!user) throw new NotFoundException(`No user with id of ${id}`);
+
+    return user;
   }
 
   find(email?: string) {
