@@ -8,16 +8,22 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { AuthService } from './auth.service';
 import { CreateUserDTO, FindUsersDTO, UpdateUserDTO } from './dto/user-input';
 import { UsersService } from './users.service';
 
 @Controller('auth')
 export class UsersController {
-  constructor(private service: UsersService) {}
+  constructor(private service: UsersService, private auth: AuthService) {}
 
   @Post('signup')
-  createUser(@Body() body: CreateUserDTO) {
-    return this.service.create(body);
+  createUser(@Body() { email, password }: CreateUserDTO) {
+    return this.auth.signup(email, password);
+  }
+
+  @Post('signin')
+  logUser(@Body() body: CreateUserDTO) {
+    return this.auth.signin(body.email, body.password);
   }
 
   @Get('/:id')
