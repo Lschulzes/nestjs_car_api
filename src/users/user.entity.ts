@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { IsEmail, MinLength } from 'class-validator';
 import {
   AfterInsert,
@@ -19,6 +20,7 @@ export class User {
 
   @Column()
   @MinLength(8)
+  @Exclude()
   password: string;
 
   @AfterInsert()

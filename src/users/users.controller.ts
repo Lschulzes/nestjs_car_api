@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -9,6 +10,7 @@ import {
   Query,
   Session,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { Auth } from 'src/guards/auth.guard';
 import { AuthService } from './auth.service';
@@ -23,6 +25,7 @@ import { User } from './user.entity';
 import { UsersService } from './users.service';
 
 @Controller('auth')
+@UseInterceptors(ClassSerializerInterceptor)
 export class UsersController {
   constructor(
     private usersService: UsersService,
@@ -30,6 +33,7 @@ export class UsersController {
   ) {}
 
   @Get('me')
+  @UseGuards(Auth)
   me(@CurrentUser() user: User) {
     return user;
   }
@@ -69,7 +73,6 @@ export class UsersController {
   }
 
   @Get()
-  @UseGuards(Auth)
   async findUsers(@Query('email') email: FindUsersDTO['email']) {
     const users = await this.usersService.find(email);
     return {
