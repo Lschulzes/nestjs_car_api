@@ -10,7 +10,14 @@ import {
   Session,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateUserDTO, FindUsersDTO, UpdateUserDTO } from './dto/user-input';
+import { CurrentUser } from './decorators/current-user.decorator';
+import {
+  CreateUserDTO,
+  FindUsersDTO,
+  UpdateUserDTO,
+  UserSession,
+} from './dto/user-input';
+import { User } from './user.entity';
 import { UsersService } from './users.service';
 
 @Controller('auth')
@@ -20,14 +27,38 @@ export class UsersController {
     private authService: AuthService,
   ) {}
 
+  @Get('me')
+  me(@CurrentUser() user: User) {
+    return user;
+  }
+
   @Post('signup')
-  createUser(@Body() { email, password }: CreateUserDTO) {
-    return this.authService.signup(email, password);
+  async createUser(
+    @Body() { email, password }: CreateUserDTO,
+    @Session() session: UserSession,
+  ) {
+    const user = await this.authService.signup(email, password);
+    session.userId = user.id;
+
+    return user;
   }
 
   @Post('signin')
-  logUser(@Body() { email, password }: CreateUserDTO) {
-    return this.authService.signin(email, password);
+  async signin(
+    @Body() { email, password }: CreateUserDTO,
+    @Session() session: any,
+  ) {
+    const user = await this.authService.signin(email, password);
+    session.userId = user.id;
+
+    return user;
+  }
+
+  @Post('signout')
+  async signout(@Session() session: any) {
+    session.userId = void 0;
+
+    return { message: 'Signed Out!' };
   }
 
   @Get('/:id')
