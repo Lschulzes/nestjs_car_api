@@ -8,7 +8,9 @@ import {
   Post,
   Query,
   Session,
+  UseGuards,
 } from '@nestjs/common';
+import { Auth } from 'src/guards/auth.guard';
 import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators/current-user.decorator';
 import {
@@ -67,8 +69,13 @@ export class UsersController {
   }
 
   @Get()
-  findUsers(@Query('email') email: FindUsersDTO['email']) {
-    return this.usersService.find(email);
+  @UseGuards(Auth)
+  async findUsers(@Query('email') email: FindUsersDTO['email']) {
+    const users = await this.usersService.find(email);
+    return {
+      results: users.length,
+      data: users,
+    };
   }
 
   @Patch('/:id')
