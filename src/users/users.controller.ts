@@ -13,6 +13,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { Auth } from 'src/guards/auth.guard';
+import { SerializeInterceptor } from 'src/interceptors/serialize.interceptor';
 import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators/current-user.decorator';
 import {
@@ -25,7 +26,7 @@ import { User } from './user.entity';
 import { UsersService } from './users.service';
 
 @Controller('auth')
-@UseInterceptors(ClassSerializerInterceptor)
+@UseInterceptors(SerializeInterceptor)
 export class UsersController {
   constructor(
     private usersService: UsersService,

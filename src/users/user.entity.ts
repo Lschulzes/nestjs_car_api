@@ -20,7 +20,6 @@ export class User {
 
   @Column()
   @MinLength(8)
-  @Exclude()
   password: string;
 
   @AfterInsert()
