@@ -11,7 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Auth } from '../guards/auth.guard';
-import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { Serialize } from '../interceptors/serialize.interceptor';
 import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators/current-user.decorator';
 import {
@@ -73,7 +73,7 @@ export class UsersController {
   }
 
   @Get()
-  async findUsers(@Query('email') email: FindUsersDTO['email']) {
+  async findUsers(@Query('email') email?: FindUsersDTO['email']) {
     const users = await this.usersService.find(email);
     return {
       results: users.length,
