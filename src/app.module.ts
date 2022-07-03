@@ -21,10 +21,13 @@ const cookieSession = require('cookie-session');
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
         return {
-          type: 'sqlite',
+          type: config.get<string>('DB_TYPE') as any,
           database: config.get<string>('DB_NAME'),
           entities: [User, Report],
           synchronize: true,
+          url: config.get<string>('DB_URL'),
+          migrations: ['migrations/*js'],
+          migrationsRun: true,
         };
       },
     }),
