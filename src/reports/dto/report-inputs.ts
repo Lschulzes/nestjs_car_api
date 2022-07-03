@@ -1,4 +1,12 @@
-import { IsNumber, IsString, Max, Min } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  Max,
+  Min,
+} from 'class-validator';
+import { ReportStatus } from '../report.entity';
 
 export class CreateReportDTO {
   @IsString()
@@ -27,4 +35,10 @@ export class CreateReportDTO {
   @Min(100)
   @Max(500000)
   price: number;
+}
+
+export class ApproveReportDTO {
+  @IsNotEmpty()
+  @IsEnum(ReportStatus)
+  status: ReportStatus;
 }

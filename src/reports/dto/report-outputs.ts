@@ -2,6 +2,9 @@ import { Expose, Transform } from 'class-transformer';
 
 export class CreateReportOutput {
   @Expose()
+  id: number;
+
+  @Expose()
   make: string;
 
   @Expose()
