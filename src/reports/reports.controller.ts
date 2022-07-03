@@ -1,11 +1,17 @@
 import { CreateReportOutput } from './dto/report-outputs';
-import { CreateReportDTO, ApproveReportDTO } from './dto/report-inputs';
+import {
+  CreateReportDTO,
+  ApproveReportDTO,
+  GetEstimateDTO,
+} from './dto/report-inputs';
 import {
   Body,
   Controller,
+  Get,
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ReportsService } from './reports.service';
@@ -30,5 +36,10 @@ export class ReportsController {
   @UseGuards(Admin)
   approveReport(@Param('id') id: string, @Body() { status }: ApproveReportDTO) {
     return this.reportsService.changeStatus(id, status);
+  }
+
+  @Get()
+  getEstimate(@Query() query: GetEstimateDTO) {
+    return this.reportsService.createEstimate(query);
   }
 }

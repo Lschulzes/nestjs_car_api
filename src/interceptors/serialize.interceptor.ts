@@ -7,12 +7,14 @@ import {
 import { plainToInstance } from 'class-transformer';
 import { map } from 'rxjs';
 
+interface ClassConstructor {
+  new (...args: Array<any>): {};
+}
+
 export class SerializeInterceptor implements NestInterceptor {
-  constructor(private DTO: any) {}
+  constructor(private DTO: ClassConstructor) {}
 
-  intercept(context: ExecutionContext, next: CallHandler) {
-    const res = context.switchToHttp().getResponse();
-
+  intercept(_ctx: ExecutionContext, next: CallHandler) {
     return next.handle().pipe(
       map((data) =>
         plainToInstance(this.DTO, data, {
@@ -21,10 +23,6 @@ export class SerializeInterceptor implements NestInterceptor {
       ),
     );
   }
-}
-
-interface ClassConstructor {
-  new (...args: Array<any>): {};
 }
 
 export const Serialize = (dto: ClassConstructor) =>

@@ -29,3 +29,23 @@ export class CreateReportOutput {
   @Expose()
   userId: number;
 }
+
+export class GetEstimateOutput {
+  @Expose()
+  make: string;
+
+  @Expose()
+  model: string;
+
+  @Expose()
+  year: number;
+
+  @Expose()
+  mileage: number;
+
+  @Expose()
+  lng: number;
+
+  @Expose()
+  lat: number;
+}
