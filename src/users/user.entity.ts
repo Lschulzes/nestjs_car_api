@@ -24,6 +24,9 @@ export class User {
   @MinLength(8)
   password: string;
 
+  @Column({ default: true })
+  isAdmin: boolean;
+
   @OneToMany(() => Report, (report) => report.user)
   reports: Array<Report>;
 
